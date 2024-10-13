@@ -1,4 +1,4 @@
-package com.example.ag_programlama;
+package com.example.AgProgramlama;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
