@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+
 @Service
 public class SnmpService {
 
@@ -35,7 +37,7 @@ public class SnmpService {
     }
 
     private String fetchSnmpValue(String ipAddress, String oid) throws IOException {
-        // SNMP taleplerinizi burada işleyin
+        // SNMP talepleri burada işlenir
         Address targetAddress = GenericAddress.parse("udp:" + ipAddress + "/161");
         Snmp snmp = new Snmp(new DefaultUdpTransportMapping());
         snmp.listen();
@@ -62,4 +64,9 @@ public class SnmpService {
         target.setVersion(SnmpConstants.version2c);
         return target;
     }
+
+    public List<SnmpData> getAllSnmpData(){
+        return snmpDataRepository.findAll();
+    }
+
 }

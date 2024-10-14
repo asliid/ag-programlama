@@ -20,4 +20,9 @@ public class SnmpData {
     private String value;
     private LocalDateTime timestamp;
 
+    @PrePersist
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
+    }
+
 }
