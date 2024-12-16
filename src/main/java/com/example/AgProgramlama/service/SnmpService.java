@@ -69,4 +69,10 @@ public class SnmpService {
         return snmpDataRepository.findAll();
     }
 
+    // IP adresine göre SNMP verisini almak için
+    public List<SnmpData> getSnmpDataByIp(String ipAddress) throws IOException {
+        return snmpDataRepository.findByIpAddress(ipAddress); // IP'ye göre veri çekme
+    }
+
+
 }

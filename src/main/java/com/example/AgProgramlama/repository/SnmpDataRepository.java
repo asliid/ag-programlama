@@ -11,4 +11,10 @@ import java.util.List;
 public interface SnmpDataRepository extends JpaRepository<SnmpData, Long> {
 
     List<SnmpData> findAll();
+
+    // IP adresine göre veri almak için
+    List<SnmpData> findByIpAddress(String ipAddress);
+    
+
+
 }
