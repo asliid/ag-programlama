@@ -1,4 +1,5 @@
 package com.example.AgProgramlama.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -24,5 +25,11 @@ public class SnmpData {
     protected void onCreate() {
         this.timestamp = LocalDateTime.now();
     }
+
+    // Cihazla ilişkilendirme
+    @ManyToOne
+    @JoinColumn(name = "device_id")
+    @JsonBackReference // Bu, Device ile ilişkilendirilen SnmpData'ya geri referans oluşturuyor
+    private Device device;  // Cihaz bilgisi
 
 }
