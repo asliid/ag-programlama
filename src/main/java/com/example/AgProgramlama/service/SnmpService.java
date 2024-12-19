@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -118,5 +119,9 @@ public class SnmpService {
 
         // Veriyi kaydediyoruz
         return snmpDataRepository.save(snmpData);
+    }
+
+    public List<SnmpData> getSnmpDataInRange(String ipAddress, String oid, LocalDateTime start, LocalDateTime end) {
+        return snmpDataRepository.findByIpAddressAndOidAndTimestampBetween(ipAddress, oid, start, end);
     }
 }

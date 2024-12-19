@@ -16,12 +16,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api") // Temel yol belirleniyor
+@CrossOrigin("http://localhost:3000/")
+
 public class SnmpController {
 
     @Autowired
@@ -30,20 +35,29 @@ public class SnmpController {
     @Autowired
     private DeviceService deviceService;
 
-    @GetMapping("/snmp") // Tam yol: /api/snmp
-    public ResponseEntity<String> getSnmpData(
+
+
+    @GetMapping("/snmp")
+    public ResponseEntity<Map<String, String>> getSnmpData(
             @RequestParam String ipAddress,
             @RequestParam String oid
     ) {
         try {
             String result = snmpService.getSnmpData(ipAddress, oid);
-            return ResponseEntity.ok(result); // 200 OK ile yanıt
+
+            // JSON veri döndürmek için bir Map kullanabilirsiniz
+            Map<String, String> response = new HashMap<>();
+            response.put("ipAddress", ipAddress);
+            response.put("oid", oid);
+            response.put("result", result);
+
+            return ResponseEntity.ok(response); // JSON formatında yanıt döner
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error: " + e.getMessage()); // 500 Internal Server Error
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-
 
     @GetMapping("/snmp/all")
     public List<SnmpData> getAllSnmpData() {
@@ -111,5 +125,19 @@ public class SnmpController {
         List<SnmpData> snmpDataList = device.getSnmpData();
 
         return ResponseEntity.ok(snmpDataList);
+    }
+
+    @GetMapping("/snmp/timeseries")
+    public ResponseEntity<List<SnmpData>> getTimeSeriesData(
+            @RequestParam String ipAddress,
+            @RequestParam String oid,
+            @RequestParam String startTime, // Başlangıç zamanı: yyyy-MM-ddTHH:mm:ss
+            @RequestParam String endTime    // Bitiş zamanı
+    ) {
+        LocalDateTime start = LocalDateTime.parse(startTime);
+        LocalDateTime end = LocalDateTime.parse(endTime);
+
+        List<SnmpData> timeSeriesData = snmpService.getSnmpDataInRange(ipAddress, oid, start, end);
+        return ResponseEntity.ok(timeSeriesData);
     }
 }
