@@ -124,4 +124,5 @@ public class SnmpService {
     public List<SnmpData> getSnmpDataInRange(String ipAddress, String oid, LocalDateTime start, LocalDateTime end) {
         return snmpDataRepository.findByIpAddressAndOidAndTimestampBetween(ipAddress, oid, start, end);
     }
+
 }

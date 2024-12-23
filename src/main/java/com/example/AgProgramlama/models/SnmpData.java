@@ -32,4 +32,9 @@ public class SnmpData {
     @JsonBackReference // Bu, Device ile ilişkilendirilen SnmpData'ya geri referans oluşturuyor
     private Device device;  // Cihaz bilgisi
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "oid_description_id")
+    private OidDescription oidDescription; // OID açıklamasına ilişkin alan
+
 }
