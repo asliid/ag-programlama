@@ -37,18 +37,15 @@ public class SnmpService {
         // SNMP verisini almak için mevcut kod
         String snmpValue = fetchSnmpValue(ipAddress, oid);
 
-        // Cihazı repository üzerinden alıyoruz
         Device device = deviceRepository.findByIpAddress(ipAddress)
                 .orElseThrow(() -> new IllegalArgumentException("Device not found"));
 
-        // SnmpData nesnesini oluşturuyoruz ve cihazla ilişkilendiriyoruz
         SnmpData snmpData = new SnmpData();
         snmpData.setIpAddress(ipAddress);
         snmpData.setOid(oid);
         snmpData.setValue(snmpValue);
-        snmpData.setDevice(device); // Cihazla ilişkilendiriyoruz
+        snmpData.setDevice(device);
 
-        // Veriyi veritabanına kaydediyoruz
         snmpDataRepository.save(snmpData);
 
         return snmpValue;

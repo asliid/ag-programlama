@@ -36,7 +36,6 @@ public class SnmpController {
     private DeviceService deviceService;
 
 
-
     @GetMapping("/snmp")
     public ResponseEntity<Map<String, String>> getSnmpData(
             @RequestParam String ipAddress,
@@ -45,7 +44,7 @@ public class SnmpController {
         try {
             String result = snmpService.getSnmpData(ipAddress, oid);
 
-            // JSON veri döndürmek için bir Map kullanabilirsiniz
+            // JSON veri döndürmek için bir Map kullanıldı
             Map<String, String> response = new HashMap<>();
             response.put("ipAddress", ipAddress);
             response.put("oid", oid);
